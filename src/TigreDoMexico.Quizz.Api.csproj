@@ -7,14 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
     <PackageReference Include="MediatR" Version="13.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.19" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\Quizz\Commands\" />
-    <Folder Include="Domain\Quizz\Handlers\" />
     <Folder Include="Domain\Quizz\Queries\" />
     <Folder Include="Integrations\Observability\" />
     <Folder Include="Middlewares\" />
