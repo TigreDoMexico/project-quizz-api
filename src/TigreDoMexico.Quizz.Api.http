@@ -1,0 +1,6 @@
+@TigreDoMexico.Quizz.Api_HostAddress = http://localhost:5229
+
+GET {{TigreDoMexico.Quizz.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
