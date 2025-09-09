@@ -1,4 +1,4 @@
-﻿namespace TigreDoMexico.Quizz.Api.Domain.Quizz;
+﻿namespace TigreDoMexico.Quizz.Api.Domain.Quizz.Entities;
 
 public class Resposta
 {

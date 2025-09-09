@@ -15,8 +15,6 @@
 
   <ItemGroup>
     <Folder Include="Domain\Quizz\Queries\" />
-    <Folder Include="Integrations\Observability\" />
-    <Folder Include="Middlewares\" />
   </ItemGroup>
 
 </Project>
