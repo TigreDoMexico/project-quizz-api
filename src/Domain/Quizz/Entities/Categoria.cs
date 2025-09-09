@@ -11,5 +11,4 @@ public enum Categoria
     Negocios = 7,
     Tecnologia = 8,
     FatosCuriosos = 9,
-    
 }
