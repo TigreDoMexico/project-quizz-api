@@ -17,7 +17,7 @@ public static class MiddlewareExtensions
     {
         var applicationName = builder.Environment.ApplicationName;
         var configuration = builder.Configuration;
-        var currentAssembly = Assembly.GetAssembly(typeof(global::Program))!;
+        var currentAssembly = Assembly.GetAssembly(typeof(Program))!;
 
         builder.Services
             .AddEndpointsApiExplorer()
