@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using FluentValidation;
 using TigreDoMexico.Quizz.Api.Middlewares.Module;
 
 namespace TigreDoMexico.Quizz.Api.Middlewares;
@@ -25,6 +26,7 @@ public static class MiddlewareExtensions
             .AddModules(configuration);
 
         builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(currentAssembly));
+        builder.Services.AddValidatorsFromAssembly(currentAssembly);
         
         return builder;
     }

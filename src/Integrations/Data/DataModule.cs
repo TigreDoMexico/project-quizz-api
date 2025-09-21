@@ -1,4 +1,6 @@
-﻿using TigreDoMexico.Quizz.Api.Middlewares.Module.Abstractions;
+﻿using Microsoft.EntityFrameworkCore;
+using TigreDoMexico.Quizz.Api.Integrations.Data.Quizz;
+using TigreDoMexico.Quizz.Api.Middlewares.Module.Abstractions;
 
 namespace TigreDoMexico.Quizz.Api.Integrations.Data;
 
@@ -6,6 +8,9 @@ public class DataModule : IModule
 {
     public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
-        throw new NotImplementedException();
+        var connectionString = configuration.GetConnectionString("MariaDb");
+        
+        services.AddDbContext<QuizzDbContext>(options =>
+            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
     }
 }
