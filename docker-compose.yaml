@@ -1,17 +1,16 @@
 services:
-  quizzapi-mariadb:
-    image: mariadb:11.4
-    container_name: mariadb
+  quizzapi-postgres:
+    image: postgres:16
+    container_name: postgres
     restart: always
     environment:
-      MARIADB_ROOT_PASSWORD: root123
-      MARIADB_DATABASE: testdb
-      MARIADB_USER: apiuser
-      MARIADB_PASSWORD: apipass
+      POSTGRES_DB: testdb
+      POSTGRES_USER: apiuser
+      POSTGRES_PASSWORD: apipass
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
-  mariadb_data:
+  postgres_data:

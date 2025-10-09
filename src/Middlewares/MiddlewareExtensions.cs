@@ -23,7 +23,8 @@ public static class MiddlewareExtensions
         builder.Services
             .AddEndpointsApiExplorer()
             .AddSwaggerGen()
-            .AddModules(configuration);
+            .AddModules(configuration)
+            .AddHealthChecks();
 
         builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(currentAssembly));
         builder.Services.AddValidatorsFromAssembly(currentAssembly);

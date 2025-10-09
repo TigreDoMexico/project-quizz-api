@@ -8,9 +8,7 @@ public class DataModule : IModule
 {
     public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("MariaDb");
-        
-        services.AddDbContext<QuizzDbContext>(options =>
-            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+        var connectionString = configuration.GetConnectionString("PostgreSQL");
+        services.AddDbContext<QuizzDbContext>(options => options.UseNpgsql(connectionString));
     }
 }

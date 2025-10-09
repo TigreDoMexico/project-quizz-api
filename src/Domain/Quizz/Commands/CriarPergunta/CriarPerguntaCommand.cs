@@ -10,4 +10,17 @@ public class CriarPerguntaCommand : IRequest<int>
     public Categoria Categoria { get; set; }
 
     public List<CriarResposta> Respostas { get; set; } = [];
+
+    public static implicit operator Pergunta(CriarPerguntaCommand command)
+        => new()
+        {
+
+            Enunciado = command.Enunciado,
+            Categoria = command.Categoria,
+            Alternativas = command.Respostas.Select(r => new Resposta
+            {
+                Enunciado = r.Enunciado,
+                Correta = r.Correta
+            }).ToList()
+        };
 }

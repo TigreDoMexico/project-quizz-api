@@ -9,6 +9,5 @@ public class QuizzModule : IModule
 {
     public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
-        throw new NotImplementedException();
     }
 }
