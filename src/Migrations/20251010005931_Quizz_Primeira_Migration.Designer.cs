@@ -11,7 +11,7 @@ using TigreDoMexico.Quizz.Api.Integrations.Data.Quizz;
 namespace TigreDoMexico.Quizz.Api.Migrations
 {
     [DbContext(typeof(QuizzDbContext))]
-    [Migration("20251009005924_Quizz_Primeira_Migration")]
+    [Migration("20251010005931_Quizz_Primeira_Migration")]
     partial class Quizz_Primeira_Migration
     {
         /// <inheritdoc />
@@ -37,7 +37,8 @@ namespace TigreDoMexico.Quizz.Api.Migrations
 
                     b.Property<string>("Enunciado")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.HasKey("Id");
 
@@ -57,7 +58,8 @@ namespace TigreDoMexico.Quizz.Api.Migrations
 
                     b.Property<string>("Enunciado")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<int?>("PerguntaId")
                         .HasColumnType("integer");

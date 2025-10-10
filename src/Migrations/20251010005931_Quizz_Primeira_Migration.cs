@@ -17,7 +17,7 @@ namespace TigreDoMexico.Quizz.Api.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Enunciado = table.Column<string>(type: "text", nullable: false),
+                    Enunciado = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     Categoria = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -31,7 +31,7 @@ namespace TigreDoMexico.Quizz.Api.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Enunciado = table.Column<string>(type: "text", nullable: false),
+                    Enunciado = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
                     Correta = table.Column<bool>(type: "boolean", nullable: false),
                     PerguntaId = table.Column<int>(type: "integer", nullable: true)
                 },

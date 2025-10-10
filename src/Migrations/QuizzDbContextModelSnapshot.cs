@@ -34,7 +34,8 @@ namespace TigreDoMexico.Quizz.Api.Migrations
 
                     b.Property<string>("Enunciado")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.HasKey("Id");
 
@@ -54,7 +55,8 @@ namespace TigreDoMexico.Quizz.Api.Migrations
 
                     b.Property<string>("Enunciado")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<int?>("PerguntaId")
                         .HasColumnType("integer");

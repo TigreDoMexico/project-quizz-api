@@ -10,7 +10,7 @@ public class CriarPerguntaValidatorTest : ValidatorTest<CriarPerguntaValidator, 
     protected override CriarPerguntaCommand GenerateCorrectData()
         => new()
         {
-            Enunciado = Faker.Lorem.Sentence(),
+            Enunciado = Faker.Lorem.Sentence(500)[..500],
             Categoria = Faker.PickRandom<Categoria>(),
             Respostas = this.GerarRespostasNoFormatoCorreto()
         };
@@ -26,22 +26,38 @@ public class CriarPerguntaValidatorTest : ValidatorTest<CriarPerguntaValidator, 
             },
             new()
             {
-                Enunciado = Faker.Lorem.Sentence(),
+                Enunciado = Faker.Lorem.Sentence(500)[..501],
+                Categoria = Faker.PickRandom<Categoria>(),
+                Respostas = this.GerarRespostasNoFormatoCorreto()
+            },
+            new()
+            {
+                Enunciado = Faker.Lorem.Sentence(500)[..500],
                 Categoria = (Categoria)10,
                 Respostas = this.GerarRespostasNoFormatoCorreto()
             },
             new()
             {
-                Enunciado = Faker.Lorem.Sentence(),
+                Enunciado = Faker.Lorem.Sentence(500)[..500],
                 Categoria = Faker.PickRandom<Categoria>(),
                 Respostas = []
             },
             new()
             {
-                Enunciado = Faker.Lorem.Sentence(),
+                Enunciado = Faker.Lorem.Sentence(500)[..500],
                 Categoria = Faker.PickRandom<Categoria>(),
                 Respostas = new AutoFaker<CriarResposta>()
                     .RuleFor(resposta => resposta.Correta, false)
+                    .RuleFor(resposta => resposta.Enunciado, Faker.Lorem.Sentence(500)[..500])
+                    .Generate(4)
+            },
+            new()
+            {
+                Enunciado = Faker.Lorem.Sentence(500)[..500],
+                Categoria = Faker.PickRandom<Categoria>(),
+                Respostas = new AutoFaker<CriarResposta>()
+                    .RuleFor(resposta => resposta.Correta, true)
+                    .RuleFor(resposta => resposta.Enunciado, Faker.Lorem.Sentence(500)[..501])
                     .Generate(4)
             }
         ];
@@ -50,10 +66,12 @@ public class CriarPerguntaValidatorTest : ValidatorTest<CriarPerguntaValidator, 
     {
         var respostas = new AutoFaker<CriarResposta>()
             .RuleFor(resposta => resposta.Correta, false)
+            .RuleFor(resposta => resposta.Enunciado, Faker.Lorem.Sentence(500)[..500])
             .Generate(4);
 
         respostas.Add(new AutoFaker<CriarResposta>()
             .RuleFor(resposta => resposta.Correta, true)
+            .RuleFor(resposta => resposta.Enunciado, Faker.Lorem.Sentence(500)[..500])
             .Generate());
 
         return respostas;

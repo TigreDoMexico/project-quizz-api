@@ -14,3 +14,4 @@ dotnet ef database update
 - [FluentValidation](https://docs.fluentvalidation.net/en/latest/)
 - [OpenTelemetry](https://opentelemetry.io/docs/languages/dotnet/) para Observabilidade
 - [Serilog](https://serilog.net/)
+- Banco de Dados: [Postgres](https://www.postgresql.org/docs/)

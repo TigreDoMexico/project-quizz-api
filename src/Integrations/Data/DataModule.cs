@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TigreDoMexico.Quizz.Api.Domain.Quizz.Persistence;
 using TigreDoMexico.Quizz.Api.Integrations.Data.Quizz;
 using TigreDoMexico.Quizz.Api.Middlewares.Module.Abstractions;
 
@@ -10,5 +11,12 @@ public class DataModule : IModule
     {
         var connectionString = configuration.GetConnectionString("PostgreSQL");
         services.AddDbContext<QuizzDbContext>(options => options.UseNpgsql(connectionString));
+        
+        ConfigureRepositories(services);
+    }
+
+    private static void ConfigureRepositories(IServiceCollection services)
+    {
+        services.AddScoped<IQuizzRepository, QuizzRepository>();
     }
 }

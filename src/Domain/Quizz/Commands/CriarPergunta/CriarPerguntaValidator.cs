@@ -8,7 +8,9 @@ public class CriarPerguntaValidator : AbstractValidator<CriarPerguntaCommand>
     {
         this.RuleFor(x => x.Enunciado)
             .NotEmpty()
-            .WithMessage(CriarPerguntaMessages.ErroEnunciadoNulo);
+            .WithMessage(CriarPerguntaMessages.ErroEnunciadoNulo)
+            .MaximumLength(500)
+            .WithMessage(CriarPerguntaMessages.ErroEnunciadoMaiorQueEsperado);
 
         this.RuleFor(x => x.Categoria)
             .IsInEnum()
@@ -19,5 +21,9 @@ public class CriarPerguntaValidator : AbstractValidator<CriarPerguntaCommand>
             .WithMessage(CriarPerguntaMessages.ErroPerguntasVazias)
             .Must(respostas => respostas.Count(resposta => resposta.Correta) == 1)
             .WithMessage(CriarPerguntaMessages.ErroSemRespostaCorreta);
+
+        this.RuleForEach(x => x.Respostas)
+            .ChildRules(resposta => resposta.RuleFor(r => r.Enunciado).MaximumLength(500))
+            .WithMessage(CriarPerguntaMessages.ErroEnunciadoMaiorQueEsperado);
     }
 }
