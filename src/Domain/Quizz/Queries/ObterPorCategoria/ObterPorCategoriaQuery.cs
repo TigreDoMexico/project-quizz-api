@@ -1,6 +1,11 @@
-﻿namespace TigreDoMexico.Quizz.Api.Domain.Quizz.Queries.ObterPorCategoria;
+﻿using MediatR;
+using TigreDoMexico.Quizz.Api.Domain.Quizz.Entities;
+using TigreDoMexico.Quizz.Api.Domain.Quizz.Queries.Responses;
 
-public class ObterPorCategoriaQuery
+namespace TigreDoMexico.Quizz.Api.Domain.Quizz.Queries.ObterPorCategoria;
+
+public class ObterPorCategoriaQuery : IRequest<List<PerguntaResponse>>
 {
-    
+    public Categoria Categoria { get; set; }
+    public int Limite { get; set; } = 10;
 }

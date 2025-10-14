@@ -5,4 +5,6 @@ namespace TigreDoMexico.Quizz.Api.Domain.Quizz.Persistence;
 public interface IQuizzRepository
 {
     Task<int> CriarAsync(Pergunta entidade, CancellationToken token = default);
+    
+    Task<List<Pergunta>> ObterPorCategoria(Categoria categoria, int limite, CancellationToken token = default);
 }
