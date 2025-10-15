@@ -7,16 +7,31 @@ namespace TigreDoMexico.Quizz.Api.Integrations.Data;
 
 public class DataModule : IModule
 {
-    public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+    public static void ConfigureServices(WebApplicationBuilder builder)
     {
-        var connectionString = configuration.GetConnectionString("PostgreSQL");
-        services.AddDbContext<QuizzDbContext>(options => options.UseNpgsql(connectionString));
+        var connectionString = builder.Configuration.GetConnectionString("PostgreSQL");
+        builder.Services.AddDbContext<QuizzDbContext>(options => options.UseNpgsql(connectionString));
+
+        ConfigureRepositories(builder.Services);
         
-        ConfigureRepositories(services);
+        if (builder.Environment.EnvironmentName != "Test")
+        {
+            ExecutarMigrations(builder.Services);
+        }
     }
 
     private static void ConfigureRepositories(IServiceCollection services)
     {
         services.AddScoped<IQuizzRepository, QuizzRepository>();
+    }
+
+    private static IServiceCollection ExecutarMigrations(IServiceCollection services)
+    {
+        using var serviceProvider = services.BuildServiceProvider();
+        using var scope = serviceProvider.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<QuizzDbContext>();
+        dbContext.Database.Migrate();
+        
+        return services;
     }
 }

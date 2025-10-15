@@ -7,7 +7,7 @@ public static class ModuleDiscovery
 {
     private static readonly Type ModuleType = typeof(IModule);
 
-    public static IServiceCollection AddModules(this IServiceCollection services, IConfiguration configuration)
+    public static WebApplicationBuilder AddModules(this WebApplicationBuilder builder)
     {
         var currentAssembly = typeof(ModuleDiscovery).Assembly;
 
@@ -15,11 +15,11 @@ public static class ModuleDiscovery
 
         foreach (var type in moduleTypes)
         {
-            var method = GetMapEndpointMethod(type);
-            method?.Invoke(null, [services, configuration]);
+            var method = GetMapModuleMethod(type);
+            method?.Invoke(null, [builder]);
         }
 
-        return services;
+        return builder;
     }
 
     private static IEnumerable<Type> GetModuleTypes(Assembly assembly)
@@ -29,7 +29,7 @@ public static class ModuleDiscovery
                         x is { IsInterface: false, IsAbstract: false });
     }
 
-    private static MethodInfo? GetMapEndpointMethod(IReflect type)
+    private static MethodInfo? GetMapModuleMethod(IReflect type)
     {
         return type.GetMethod(nameof(IModule.ConfigureServices),
             BindingFlags.Static | BindingFlags.Public);

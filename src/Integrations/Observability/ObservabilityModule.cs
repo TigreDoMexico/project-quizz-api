@@ -8,10 +8,10 @@ namespace TigreDoMexico.Quizz.Api.Integrations.Observability;
 /// </summary>
 public class ObservabilityModule : IModule
 {
-    public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+    public static void ConfigureServices(WebApplicationBuilder builder)
     {
-        services.AddHttpContextAccessor();
-        services.AddSerilog();
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddSerilog();
     }
 
     public static ILoggingBuilder ConfigureLogging(

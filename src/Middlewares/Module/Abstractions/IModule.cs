@@ -2,5 +2,5 @@
 
 public interface IModule
 {
-    static abstract void ConfigureServices(IServiceCollection services, IConfiguration configuration);
+    static abstract void ConfigureServices(WebApplicationBuilder builder);
 }

@@ -20,10 +20,11 @@ public static class MiddlewareExtensions
         var configuration = builder.Configuration;
         var currentAssembly = Assembly.GetAssembly(typeof(Program))!;
 
+        builder.AddModules();
+        
         builder.Services
             .AddEndpointsApiExplorer()
             .AddSwaggerGen()
-            .AddModules(configuration)
             .AddHealthChecks();
 
         builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(currentAssembly));

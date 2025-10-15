@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\TigreDoMexico.Quizz.Api.csproj" />
+    <ProjectReference Include="..\..\src\TigreDoMexico.Quizz.Api.csproj" />
   </ItemGroup>
 
 </Project>

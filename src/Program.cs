@@ -8,3 +8,8 @@ app.ConfigureMiddlewares();
 app.MapEndpoints();
 
 app.Run();
+
+namespace TigreDoMexico.Quizz.Api
+{
+    public partial class Program;
+}

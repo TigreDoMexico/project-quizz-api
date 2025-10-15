@@ -7,7 +7,7 @@ namespace TigreDoMexico.Quizz.Api.Domain.Quizz;
 /// </summary>
 public class QuizzModule : IModule
 {
-    public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+    public static void ConfigureServices(WebApplicationBuilder builder)
     {
     }
 }
