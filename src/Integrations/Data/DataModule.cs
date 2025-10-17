@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TigreDoMexico.Quizz.Api.Domain.Quizz.Persistence;
 using TigreDoMexico.Quizz.Api.Integrations.Data.Quizz;
+using TigreDoMexico.Quizz.Api.Integrations.Data.UoW;
 using TigreDoMexico.Quizz.Api.Middlewares.Module.Abstractions;
 
 namespace TigreDoMexico.Quizz.Api.Integrations.Data;
@@ -12,7 +13,7 @@ public class DataModule : IModule
         var connectionString = builder.Configuration.GetConnectionString("PostgreSQL");
         builder.Services.AddDbContext<QuizzDbContext>(options => options.UseNpgsql(connectionString));
 
-        ConfigureRepositories(builder.Services);
+        ConfigurarDependencias(builder.Services);
         
         if (builder.Environment.EnvironmentName != "Test")
         {
@@ -20,8 +21,9 @@ public class DataModule : IModule
         }
     }
 
-    private static void ConfigureRepositories(IServiceCollection services)
+    private static void ConfigurarDependencias(IServiceCollection services)
     {
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IQuizzRepository, QuizzRepository>();
     }
 

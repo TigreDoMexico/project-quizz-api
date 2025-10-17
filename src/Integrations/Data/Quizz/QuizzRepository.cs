@@ -14,7 +14,6 @@ public class QuizzRepository(QuizzDbContext context, ILogger<QuizzRepository> lo
         try
         {
             await context.Perguntas.AddAsync(entidade, token);
-            await context.SaveChangesAsync(token);
         }
         catch (Exception ex)
         {
@@ -26,18 +25,25 @@ public class QuizzRepository(QuizzDbContext context, ILogger<QuizzRepository> lo
         return entidade.Id;
     }
 
-    public async Task<List<Pergunta>> ObterPorCategoria(Categoria categoria, int limite, CancellationToken token = default)
+    public async Task<List<Pergunta>> ObterPorCategoriaAsync(
+        Categoria categoria,
+        int limite,
+        CancellationToken token = default)
     {
         logger.LogInformation("Obtendo perguntas do banco de dados.");
         
         try
         {
-            return await context
+            var result = await context
                 .Perguntas
                 .Include(p => p.Alternativas)
                 .Where(p => p.Categoria == categoria)
+                .OrderBy(p => p.Id)
                 .Take(limite)
                 .ToListAsync(token);
+            
+            logger.LogInformation("Dados obtidos com sucesso.");
+            return result;
         }
         catch (Exception ex)
         {

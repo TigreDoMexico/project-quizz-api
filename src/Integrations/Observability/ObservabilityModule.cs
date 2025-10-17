@@ -1,4 +1,7 @@
-﻿using Serilog;
+﻿using System.Globalization;
+using Serilog;
+using Serilog.Sinks.OpenTelemetry;
+using TigreDoMexico.Quizz.Api.Integrations.Observability.Formatting;
 using TigreDoMexico.Quizz.Api.Middlewares.Module.Abstractions;
 
 namespace TigreDoMexico.Quizz.Api.Integrations.Observability;
@@ -12,16 +15,36 @@ public class ObservabilityModule : IModule
     {
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddSerilog();
+        
+        ConfigureLogging(builder.Logging, builder.Configuration);
     }
 
     public static ILoggingBuilder ConfigureLogging(
         ILoggingBuilder builder,
-        IConfiguration configuration,
-        string applicationName)
+        IConfiguration configuration)
     {
         var destinationUrl = GetDestinationUrl(configuration, "OTel:Logging");
 
-        var logger = new LoggerConfiguration();
+        var logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(configuration)
+            .Enrich.FromLogContext()
+            .WriteTo.Console(new LogFormatter())
+            .WriteTo.OpenTelemetry(options =>
+            {
+                options.Endpoint = destinationUrl;
+                options.Protocol = OtlpProtocol.Grpc;
+                options.FormatProvider = CultureInfo.InvariantCulture;
+                options.ResourceAttributes = new Dictionary<string, object>
+                {
+                    ["service.name"] = "tigredomexico.quizz.api"
+                };
+            })
+            .CreateLogger();
+        
+        Log.Logger = logger;
+
+        builder.ClearProviders();
+        builder.AddSerilog(logger);
         
         return builder;
     }

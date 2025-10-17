@@ -1,10 +1,9 @@
-using System.Net;
 using System.Text;
 using System.Text.Json;
 using AutoBogus;
 using TigreDoMexico.Quizz.Api.Domain.Quizz.Commands.CriarPergunta;
-using TigreDoMexico.Quizz.Api.Domain.Quizz.Entities;
 using TigreDoMexico.Quizz.Api.Integration.Test.Factory;
+using TigreDoMexico.Quizz.Api.Shared.Responses;
 
 namespace TigreDoMexico.Quizz.Api.Integration.Test.Quizz;
 
@@ -25,6 +24,12 @@ public class CriarQuizzRequestTest(QuizzClassFactory factory) : QuizzRequestTest
         
         // ASSERT
         response.EnsureSuccessStatusCode();
+        
+        var result = await ObterCorpoDoResponse<SucessoResponse<int>>(response);
+        
+        Assert.NotNull(result);
+        Assert.True(result.Sucesso);
+        Assert.Equal(0, result.Data);
     }
     
     [Fact]
@@ -41,7 +46,12 @@ public class CriarQuizzRequestTest(QuizzClassFactory factory) : QuizzRequestTest
         var response = await client.PostAsync("/api/v1/quizz", content);
         
         // ASSERT
-        Assert.Equal(HttpStatusCode.UnprocessableContent, response.StatusCode);
+        var result = await ObterCorpoDoResponse<ErroResponse<string>>(response);
+        
+        Assert.NotNull(result);
+        Assert.Equal(422, result.CodigoErro);
+        Assert.Equal("Deve existir somente uma resposta certa na lista de respostas.", result.Data);
+        Assert.False(result.Sucesso);
     }
 
     private CriarPerguntaCommand CriarMockRequest(bool valido = true)

@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using TigreDoMexico.Quizz.Api.Domain.Quizz.Entities;
+using TigreDoMexico.Quizz.Api.Shared.Responses;
 
 namespace TigreDoMexico.Quizz.Api.Domain.Quizz.Commands.CriarPergunta;
 
-public class CriarPerguntaCommand : IRequest<int>
+public class CriarPerguntaCommand : IRequest<Response>
 {
     public string Enunciado { get; set; } = string.Empty;
 

@@ -55,6 +55,8 @@ public static class MiddlewareExtensions
         app.UseSwagger();
         app.UseSwaggerUI();
         
+        app.UseMiddleware<UnitOfWorkMiddleware>();
+        
         return app;
     }
 

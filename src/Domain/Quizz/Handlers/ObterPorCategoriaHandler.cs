@@ -6,13 +6,14 @@ using TigreDoMexico.Quizz.Api.Domain.Quizz.Persistence;
 using TigreDoMexico.Quizz.Api.Domain.Quizz.Queries.ObterPorCategoria;
 using TigreDoMexico.Quizz.Api.Domain.Quizz.Queries.Responses;
 using TigreDoMexico.Quizz.Api.Middlewares.Module.Abstractions;
+using TigreDoMexico.Quizz.Api.Shared.Responses;
 
 namespace TigreDoMexico.Quizz.Api.Domain.Quizz.Handlers;
 
 public class ObterPorCategoriaHandler(
     IValidator<ObterPorCategoriaQuery> validator,
     IQuizzRepository repository
-) : IRequestHandler<ObterPorCategoriaQuery, List<PerguntaResponse>>, IEndpoint
+) : IRequestHandler<ObterPorCategoriaQuery, Response>, IEndpoint
 {
     public static void MapEndpoint(IEndpointRouteBuilder endpoints)
     {
@@ -28,15 +29,21 @@ public class ObterPorCategoriaHandler(
         });
     }
 
-    public async Task<List<PerguntaResponse>> Handle(
+    public async Task<Response> Handle(
         ObterPorCategoriaQuery request,
         CancellationToken cancellationToken)
     {
-        await validator.ValidateAndThrowAsync(request, cancellationToken);
-        var perguntas = await repository.ObterPorCategoria(request.Categoria, request.Limite, cancellationToken);
-
-        return perguntas
+        var result = await validator.ValidateAsync(request, cancellationToken);
+        if (!result.IsValid)
+        {
+            return new ErroResponse(result.ToString("\n"), 422);
+        }
+        
+        var perguntas = await repository.ObterPorCategoriaAsync(request.Categoria, request.Limite, cancellationToken);
+        var listaPerguntas = perguntas
             .Select(p => (PerguntaResponse)p)
             .ToList();
+        
+        return new SucessoResponse(listaPerguntas);
     }
 }

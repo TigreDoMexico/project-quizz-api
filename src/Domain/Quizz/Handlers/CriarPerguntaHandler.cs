@@ -3,13 +3,14 @@ using MediatR;
 using TigreDoMexico.Quizz.Api.Domain.Quizz.Commands.CriarPergunta;
 using TigreDoMexico.Quizz.Api.Domain.Quizz.Persistence;
 using TigreDoMexico.Quizz.Api.Middlewares.Module.Abstractions;
+using TigreDoMexico.Quizz.Api.Shared.Responses;
 
 namespace TigreDoMexico.Quizz.Api.Domain.Quizz.Handlers;
 
 public class CriarPerguntaHandler(
     IValidator<CriarPerguntaCommand> validator,
     IQuizzRepository repository
-) : IRequestHandler<CriarPerguntaCommand, int>, IEndpoint
+) : IRequestHandler<CriarPerguntaCommand, Response>, IEndpoint
 {
     public static void MapEndpoint(IEndpointRouteBuilder endpoints)
     {
@@ -20,11 +21,15 @@ public class CriarPerguntaHandler(
         });
     }
 
-    public async Task<int> Handle(CriarPerguntaCommand request, CancellationToken cancellationToken)
+    public async Task<Response> Handle(CriarPerguntaCommand request, CancellationToken cancellationToken)
     {
-        await validator.ValidateAndThrowAsync(request, cancellationToken);
+        var result = await validator.ValidateAsync(request, cancellationToken);
+        if (!result.IsValid)
+        {
+            return new ErroResponse(result.ToString("\n"), 422);
+        }
         
         var newId = await repository.CriarAsync(request, cancellationToken);
-        return newId;
+        return new SucessoResponse(newId);
     }
 }
