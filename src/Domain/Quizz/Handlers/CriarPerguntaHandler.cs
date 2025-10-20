@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Net;
+using FluentValidation;
 using MediatR;
 using TigreDoMexico.Quizz.Api.Domain.Quizz.Commands.CriarPergunta;
 using TigreDoMexico.Quizz.Api.Domain.Quizz.Persistence;
@@ -16,8 +17,8 @@ public class CriarPerguntaHandler(
     {
         endpoints.MapPost("/api/v1/quizz", async (CriarPerguntaCommand command, IMediator mediator) =>
         {
-            var result = await mediator.Send(command);
-            return Results.Ok(result);
+            var response = await mediator.Send(command);
+            return response.ParaHttpResult(HttpStatusCode.Created);
         });
     }
 
@@ -26,7 +27,7 @@ public class CriarPerguntaHandler(
         var result = await validator.ValidateAsync(request, cancellationToken);
         if (!result.IsValid)
         {
-            return new ErroResponse(result.ToString("\n"), 422);
+            return new ErroResponse(result.ToString("\n"), (int)HttpStatusCode.UnprocessableContent);
         }
         
         var newId = await repository.CriarAsync(request, cancellationToken);

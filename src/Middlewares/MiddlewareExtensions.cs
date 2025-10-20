@@ -21,7 +21,7 @@ public static class MiddlewareExtensions
         var currentAssembly = Assembly.GetAssembly(typeof(Program))!;
 
         builder.AddModules();
-        
+
         builder.Services
             .AddEndpointsApiExplorer()
             .AddSwaggerGen()
@@ -29,10 +29,10 @@ public static class MiddlewareExtensions
 
         builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(currentAssembly));
         builder.Services.AddValidatorsFromAssembly(currentAssembly);
-        
+
         return builder;
     }
-    
+
     /// <summary>
     /// Método para adicionar os demais middlewares da aplicação.
     /// </summary>
@@ -54,9 +54,10 @@ public static class MiddlewareExtensions
 
         app.UseSwagger();
         app.UseSwaggerUI();
-        
-        app.UseMiddleware<UnitOfWorkMiddleware>();
-        
+
+        app.UseMiddleware<ExceptionHandlerMiddleware>()
+            .UseMiddleware<UnitOfWorkMiddleware>();
+
         return app;
     }
 

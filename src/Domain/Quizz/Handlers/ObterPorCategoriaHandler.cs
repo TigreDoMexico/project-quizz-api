@@ -1,3 +1,4 @@
+using System.Net;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -24,8 +25,8 @@ public class ObterPorCategoriaHandler(
         {
             var query = new ObterPorCategoriaQuery { Categoria = categoria, Limite = limite ?? 10 };
 
-            var result = await mediator.Send(query);
-            return Results.Ok(result);
+            var response = await mediator.Send(query);
+            return response.ParaHttpResult();
         });
     }
 
@@ -36,7 +37,7 @@ public class ObterPorCategoriaHandler(
         var result = await validator.ValidateAsync(request, cancellationToken);
         if (!result.IsValid)
         {
-            return new ErroResponse(result.ToString("\n"), 422);
+            return new ErroResponse(result.ToString("\n"), (int)HttpStatusCode.UnprocessableContent);
         }
         
         var perguntas = await repository.ObterPorCategoriaAsync(request.Categoria, request.Limite, cancellationToken);
