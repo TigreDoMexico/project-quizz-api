@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TigreDoMexico.Quizz.Api", "src\TigreDoMexico.Quizz.Api.csproj", "{7CEB89BC-5C0C-4697-A27D-6E61DE81DCF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TigreDoMexico.Quizz.Api.Test", "test\TigreDoMexico.Quizz.Api.Test\TigreDoMexico.Quizz.Api.Test.csproj", "{FA19939E-948A-41F8-82B0-AA1A9E781E80}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D3E3BB56-B9AF-4E8E-85C6-D8720D45979D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{24DC38E6-0162-482B-B2D7-D1A8C1B1EEE3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "files", "files", "{94824E19-7C6A-4587-9DE1-DBB7462BF972}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TigreDoMexico.Quizz.Api.Integration.Test", "test\TigreDoMexico.Quizz.Api.Integration.Test\TigreDoMexico.Quizz.Api.Integration.Test.csproj", "{23A50AE1-64A0-492E-B993-DF9476D53FAD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7CEB89BC-5C0C-4697-A27D-6E61DE81DCF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CEB89BC-5C0C-4697-A27D-6E61DE81DCF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CEB89BC-5C0C-4697-A27D-6E61DE81DCF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CEB89BC-5C0C-4697-A27D-6E61DE81DCF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA19939E-948A-41F8-82B0-AA1A9E781E80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA19939E-948A-41F8-82B0-AA1A9E781E80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA19939E-948A-41F8-82B0-AA1A9E781E80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA19939E-948A-41F8-82B0-AA1A9E781E80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23A50AE1-64A0-492E-B993-DF9476D53FAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23A50AE1-64A0-492E-B993-DF9476D53FAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23A50AE1-64A0-492E-B993-DF9476D53FAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23A50AE1-64A0-492E-B993-DF9476D53FAD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7CEB89BC-5C0C-4697-A27D-6E61DE81DCF7} = {D3E3BB56-B9AF-4E8E-85C6-D8720D45979D}
+		{FA19939E-948A-41F8-82B0-AA1A9E781E80} = {24DC38E6-0162-482B-B2D7-D1A8C1B1EEE3}
+		{23A50AE1-64A0-492E-B993-DF9476D53FAD} = {24DC38E6-0162-482B-B2D7-D1A8C1B1EEE3}
+	EndGlobalSection
+EndGlobal

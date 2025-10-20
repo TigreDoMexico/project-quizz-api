@@ -1,0 +1,16 @@
+services:
+  quizzapi-postgres:
+    image: postgres:16
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: testdb
+      POSTGRES_USER: apiuser
+      POSTGRES_PASSWORD: apipass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
