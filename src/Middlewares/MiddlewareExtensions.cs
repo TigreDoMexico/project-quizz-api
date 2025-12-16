@@ -1,5 +1,8 @@
 ﻿using System.Reflection;
+using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
 using FluentValidation;
+using Scalar.AspNetCore;
 using TigreDoMexico.Quizz.Api.Middlewares.Module;
 
 namespace TigreDoMexico.Quizz.Api.Middlewares;
@@ -23,8 +26,55 @@ public static class MiddlewareExtensions
         builder.AddModules();
 
         builder.Services
+            .AddApiVersioning(options =>
+            {
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.ApiVersionReader = ApiVersionReader.Combine(
+                    new UrlSegmentApiVersionReader(),
+                    new QueryStringApiVersionReader("version"),
+                    new HeaderApiVersionReader("X-Version")
+                );
+            })
+            .AddApiExplorer(setup =>
+            {
+                setup.GroupNameFormat = "'v'VVV";
+                setup.SubstituteApiVersionInUrl = true;
+            });
+
+        builder.Services
             .AddEndpointsApiExplorer()
-            .AddSwaggerGen()
+            .AddSwaggerGen(c =>
+            {
+                var provider = builder.Services
+                    .BuildServiceProvider()
+                    .GetRequiredService<IApiVersionDescriptionProvider>();
+
+                foreach (var description in provider.ApiVersionDescriptions)
+                {
+                    c.SwaggerDoc(
+                        description.GroupName,
+                        new Microsoft.OpenApi.Models.OpenApiInfo
+                        {
+                            Title = "Quizz API",
+                            Version = description.ApiVersion.ToString(),
+                            Description = "API para gerenciamento de quizzes"
+                        });
+                }
+                
+                // c.SwaggerDoc("v1", new OpenApiInfo
+                // {
+                //     Title = "Quizz API",
+                //     Version = "v1",
+                //     Description = "API para gerenciamento de quizzes"
+                // });
+                // c.SwaggerDoc("v2", new OpenApiInfo
+                // {
+                //     Title = "Quizz API",
+                //     Version = "v2",
+                //     Description = "API para gerenciamento de quizzes - Versão 2"
+                // });
+            })
             .AddHealthChecks();
 
         builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(currentAssembly));
@@ -46,14 +96,9 @@ public static class MiddlewareExtensions
         {
             app.UseHttpsRedirection();
         }
-        else
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI();
-        }
-
+        
         app.UseSwagger();
-        app.UseSwaggerUI();
+        app.MapScalarApiReference()
 
         app.UseMiddleware<ExceptionHandlerMiddleware>()
             .UseMiddleware<UnitOfWorkMiddleware>();
@@ -65,6 +110,12 @@ public static class MiddlewareExtensions
     {
         app.MapHealthChecks("api/health");
         app.RegisterEndpoints();
+        
+        var environment = app.Services.GetRequiredService<IWebHostEnvironment>();
+        if (!environment.IsProduction())
+        {
+            app.MapScalarWithConfiguration();
+        }
 
         return app;
     }

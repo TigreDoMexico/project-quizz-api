@@ -1,4 +1,5 @@
 using System.Net;
+using Asp.Versioning;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,12 @@ public class ObterPorCategoriaHandler(
 {
     public static void MapEndpoint(IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapGet("/api/v1/quizz", async (
+        var group = endpoints.MapGroup("/api/v{version:apiVersion}/quizz")
+            .WithApiVersionSet()
+            .HasApiVersion(1.0)
+            .HasApiVersion(2.0);
+
+        group.MapGet("/", async (
             [FromQuery] Categoria categoria,
             [FromQuery] int? limite,
             IMediator mediator) =>
@@ -27,7 +33,10 @@ public class ObterPorCategoriaHandler(
 
             var response = await mediator.Send(query);
             return response.ParaHttpResult();
-        });
+        })
+        .WithName("ObterPorCategoria")
+        .WithTags("Quizz")
+        .WithOpenApi();
     }
 
     public async Task<Response> Handle(

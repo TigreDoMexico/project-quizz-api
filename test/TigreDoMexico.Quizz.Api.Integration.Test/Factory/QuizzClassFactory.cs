@@ -13,7 +13,7 @@ public class QuizzClassFactory : WebApplicationFactory<Program>, IAsyncLifetime
 {
     private readonly PostgresTestContainer _postgresContainer = new();
     
-    private string? _postgresConnectionString = null;
+    private string? _postgresConnectionString;
 
     public QuizzDbContext DbContext { get; private set; } = null!;
     public DbConnection DbConnection { get; private set; } = null!;

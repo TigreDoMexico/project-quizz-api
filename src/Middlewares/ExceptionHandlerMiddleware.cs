@@ -11,6 +11,13 @@ public class ExceptionHandlerMiddleware(RequestDelegate next)
     private const string ErrorMessage = "ErrorMessage";
     private const string ErrorCode = "ErrorCode";
     
+    private static readonly JsonSerializerOptions CamelCaseOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) },
+        IncludeFields = false,
+    };
+    
     public async Task InvokeAsync(HttpContext context)
     {
         try
@@ -46,14 +53,7 @@ public class ExceptionHandlerMiddleware(RequestDelegate next)
     
     private static async Task GerarHttpResponse(HttpContext context, ErroResponse<string> response, int statusCode)
     {
-        var options = new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) },
-            IncludeFields = false,
-        };
-        
-        var jsonResponse = JsonSerializer.Serialize(response, options);
+        var jsonResponse = JsonSerializer.Serialize(response, CamelCaseOptions);
         context.Response.StatusCode = statusCode;
         context.Response.ContentType = "application/json";
 

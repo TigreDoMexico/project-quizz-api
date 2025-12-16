@@ -1,10 +1,17 @@
 using TigreDoMexico.Quizz.Api.Middlewares;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.ConfigureAppServices();
 
 var app = builder.Build();
 app.ConfigureMiddlewares();
+
+if (!app.Environment.IsProduction())
+{
+    app.MapScalarApiReference();
+}
+
 app.MapEndpoints();
 
 app.Run();

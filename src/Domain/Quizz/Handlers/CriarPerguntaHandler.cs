@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Asp.Versioning;
 using FluentValidation;
 using MediatR;
 using TigreDoMexico.Quizz.Api.Domain.Quizz.Commands.CriarPergunta;
@@ -15,11 +16,19 @@ public class CriarPerguntaHandler(
 {
     public static void MapEndpoint(IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapPost("/api/v1/quizz", async (CriarPerguntaCommand command, IMediator mediator) =>
+        var group = endpoints.MapGroup("/api/v{version:apiVersion}/quizz")
+            .WithApiVersionSet()
+            .HasApiVersion(1.0)
+            .HasApiVersion(2.0);
+
+        group.MapPost("/", async (CriarPerguntaCommand command, IMediator mediator) =>
         {
             var response = await mediator.Send(command);
             return response.ParaHttpResult(HttpStatusCode.Created);
-        });
+        })
+        .WithName("CriarPergunta")
+        .WithTags("Quizz")
+        .WithOpenApi();
     }
 
     public async Task<Response> Handle(CriarPerguntaCommand request, CancellationToken cancellationToken)
