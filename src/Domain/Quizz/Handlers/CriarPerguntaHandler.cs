@@ -18,17 +18,15 @@ public class CriarPerguntaHandler(
     {
         var group = endpoints.MapGroup("/api/v{version:apiVersion}/quizz")
             .WithApiVersionSet()
-            .HasApiVersion(1.0)
-            .HasApiVersion(2.0);
+            .HasApiVersion(1.0);
 
         group.MapPost("/", async (CriarPerguntaCommand command, IMediator mediator) =>
-        {
-            var response = await mediator.Send(command);
-            return response.ParaHttpResult(HttpStatusCode.Created);
-        })
-        .WithName("CriarPergunta")
-        .WithTags("Quizz")
-        .WithOpenApi();
+            {
+                var response = await mediator.Send(command);
+                return response.ParaHttpResult(HttpStatusCode.Created);
+            })
+            .WithName("CriarPergunta")
+            .WithTags("Quizz");
     }
 
     public async Task<Response> Handle(CriarPerguntaCommand request, CancellationToken cancellationToken)

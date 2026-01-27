@@ -24,7 +24,7 @@ public static class MiddlewareExtensions
         var currentAssembly = Assembly.GetAssembly(typeof(Program))!;
 
         builder.AddModules();
-
+        
         builder.Services
             .AddApiVersioning(options =>
             {
@@ -38,7 +38,7 @@ public static class MiddlewareExtensions
             })
             .AddApiExplorer(setup =>
             {
-                setup.GroupNameFormat = "'v'VVV";
+                setup.GroupNameFormat = "'v'V";
                 setup.SubstituteApiVersionInUrl = true;
             });
 
@@ -97,9 +97,6 @@ public static class MiddlewareExtensions
             app.UseHttpsRedirection();
         }
         
-        app.UseSwagger();
-        app.MapScalarApiReference()
-
         app.UseMiddleware<ExceptionHandlerMiddleware>()
             .UseMiddleware<UnitOfWorkMiddleware>();
 
@@ -114,7 +111,13 @@ public static class MiddlewareExtensions
         var environment = app.Services.GetRequiredService<IWebHostEnvironment>();
         if (!environment.IsProduction())
         {
-            app.MapScalarWithConfiguration();
+            app.MapScalarApiReference(options =>
+            {
+                options
+                    .WithTitle("Quizz API")
+                    .WithTheme(ScalarTheme.Moon)
+                    .WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
+            });
         }
 
         return app;

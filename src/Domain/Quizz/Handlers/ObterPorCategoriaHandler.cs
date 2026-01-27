@@ -21,8 +21,7 @@ public class ObterPorCategoriaHandler(
     {
         var group = endpoints.MapGroup("/api/v{version:apiVersion}/quizz")
             .WithApiVersionSet()
-            .HasApiVersion(1.0)
-            .HasApiVersion(2.0);
+            .HasApiVersion(1.0);
 
         group.MapGet("/", async (
             [FromQuery] Categoria categoria,
@@ -35,8 +34,7 @@ public class ObterPorCategoriaHandler(
             return response.ParaHttpResult();
         })
         .WithName("ObterPorCategoria")
-        .WithTags("Quizz")
-        .WithOpenApi();
+        .WithTags("Quizz");
     }
 
     public async Task<Response> Handle(

@@ -7,11 +7,6 @@ builder.ConfigureAppServices();
 var app = builder.Build();
 app.ConfigureMiddlewares();
 
-if (!app.Environment.IsProduction())
-{
-    app.MapScalarApiReference();
-}
-
 app.MapEndpoints();
 
 app.Run();

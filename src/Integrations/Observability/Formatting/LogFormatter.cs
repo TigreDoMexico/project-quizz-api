@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using OpenTelemetry.Trace;
@@ -15,6 +16,7 @@ public class LogFormatter : ITextFormatter
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         Converters = { new JsonStringEnumConverter(JsonNamingPolicy.CamelCase) },
         IncludeFields = true,
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
     };
     
     public void Format(LogEvent logEvent, TextWriter output)
@@ -41,7 +43,7 @@ public class LogFormatter : ITextFormatter
         };
 
         var jsonOutputData = JsonSerializer.Serialize(outputData, options: CamelCaseOptions);
-        JsonValueFormatter.WriteQuotedJsonString(jsonOutputData, output);
+        output.Write(jsonOutputData);
     }
 
     private static string BuildHttpRequestUrl(LogEvent logEvent)
